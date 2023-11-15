@@ -9,9 +9,36 @@ Priorities:
     - uppercase items A-Z: 27-52
 
 Puzzle 1: What is the sum of the priorities for all rucksacks?
+Puzzle 2: What is the sum of the priorities of the
+badges for each group of three elves?
 """
 
 import sys
+
+
+def group_badge_priorities(input_file, group_size=3):
+    file = open(input_file, "r")
+    total = 0
+    group = []
+
+    for line in file:
+        badge = ""
+        priority = 0
+        group.append(line)
+        if len(group) == group_size:
+            for char in group[0]:
+                if (group[1].find(char) != -1 and
+                        group[2].find(char) != -1):
+                    badge = char
+                    break
+            if badge.isupper():
+                adjust = 38
+            else:
+                adjust = 96
+            priority = ord(badge) - adjust
+            total += priority
+            group = []
+    return total
 
 
 def rucksack_priorities(input_file):
@@ -45,3 +72,4 @@ except NameError:
 
 if input_file is not None:
     print(rucksack_priorities(input_file))
+    print(group_badge_priorities(input_file, 3))
