@@ -1,5 +1,5 @@
 """
-Input defines: 
+Input defines:
     Initial crate layout
     Rearrangement that should happen
 Example
@@ -35,21 +35,16 @@ def setup_stacks(stack_lines):
     return stacks
 
 
-def predict_top_crate(input_file):
+def predict_top_crate_stack(input_file):
     instructions = []
 
     with open(input_file, "r") as file:
         stack_start, movements = file.read().split('\n\n')
         stack_lines = stack_start.split('\n')
         stacks = setup_stacks(stack_lines)
-        for stack in stacks:
-            print(stack)
 
         for move in movements.split('\n'):
             instructions.clear()
-            print(move)
-            print("7:", stacks[6])
-            print("8:", stacks[7])
 
             for chunk in move.split(' '):
                 if chunk.isnumeric():
@@ -66,10 +61,43 @@ def predict_top_crate(input_file):
             print(stack[-1])
 
 
+def predict_top_crate_sublist(input_file):
+    instructions = []
+    swap = []
+
+    with open(input_file, "r") as file:
+        stack_start, movements = file.read().split('\n\n')
+        stack_lines = stack_start.split('\n')
+        stacks = setup_stacks(stack_lines)
+
+        for move in movements.split('\n'):
+            instructions.clear()
+            swap.clear()
+
+            for chunk in move.split(' '):
+                if chunk.isnumeric():
+                    instructions.append(chunk)
+
+            if len(instructions) > 0:
+                num_crates_move = int(instructions[0])
+                source_stack = int(instructions[1]) - 1
+                dest_stack = int(instructions[2]) - 1
+
+                swap = stacks[source_stack][0-num_crates_move:]
+                stacks[dest_stack].extend(swap)
+                stacks[source_stack] = stacks[source_stack][:0-num_crates_move]
+
+        for stack in stacks:
+            print(stack[-1])
+
+
 try:
     input_file = sys.argv[1]
 except NameError:
     input_file = None
 
 if input_file is not None:
-    predict_top_crate(input_file)
+    print("Top crates w/ stack:")
+    predict_top_crate_stack(input_file)
+    print("Top crates w/ sublist:")
+    predict_top_crate_sublist(input_file)
