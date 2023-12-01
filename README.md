@@ -6,7 +6,7 @@ I'll throw some work on 2022 puzzles in here as I have time before 2023 begins t
 but I will try to make it clear if that changes.
 ## Directory Structure
 ``` shell
-<year>/                                # Year for advent of code challenges, i.e. 2023 
+<year>/                                # Year for advent of code challenges, i.e. 2023. This will contain the input files for each day, named "input_dayX" or "jbowe_dayX" for a smaller test.
 └── <language>/                        # Language solutions are written in, i.e Python. I may include multiple languages in one year as I attempt to learn different languages.
     └── <day>                          # Subfolders for specific days may be created if the solution makes more sense in multiple files.
 ```
