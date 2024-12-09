@@ -1,6 +1,4 @@
 /*
-Being sent into the sky via trebuchet to figure out issue w/ snow.
-Calibration document has been amended, and needs to be "decoded".
 Looking for list of locations that Chief Historian is visiting.
 Two lists of location IDs were created, but don't line up (input).
 - Pull input into two separate lists
