@@ -20,8 +20,8 @@ pub fn main() !void {
     const stdin_stream = &reader.interface;
 
     const banks = try stdin_stream.allocRemaining(allocator, std.io.Limit.unlimited);
-    const output1 = try part1(banks);
-    const output2 = try part2(banks);
+    const output1 = try totalJoltageForBatteryCount(banks, 2);
+    const output2 = try totalJoltageForBatteryCount(banks, 12);
     std.debug.print("Maximum Joltage Total Output: {d}\n", .{output1});
     std.debug.print("Maximum Joltage Total Output with 12 batteries: {d}\n", .{output2});
 }
@@ -45,20 +45,20 @@ fn part1(banks: []const u8) !usize {
     } else totalOutput;
 }
 
-fn part2(banks: []const u8) !usize {
+fn totalJoltageForBatteryCount(banks: []const u8, numBanks: usize) !usize {
     var totalOutput: usize = 0;
     var maxJoltage: usize = 0;
     var start: usize = 0;
-    var i: usize = 12;
+    var i: usize = numBanks;
 
     var bankIter = std.mem.splitScalar(u8, banks, '\n');
     return while (bankIter.next()) |bank| : ({
         totalOutput += maxJoltage;
         maxJoltage = 0;
         start = 0;
-        i = 12;
+        i = numBanks;
     }) {
-        if (bank.len < 12) continue;
+        if (bank.len < numBanks) continue;
         while (i > 0) : (i -= 1) {
             var max: u8 = '0';
             const end = bank.len - i;
@@ -84,13 +84,24 @@ test "part1 sample input" {
     try std.testing.expectEqual(want, got);
 }
 
-test "part2 sample input" {
-    const want = 3_121_910_778_619;
-    const got = try part2(
+test "better solution with 2 batteries" {
+    const want = 357;
+    const got = try totalJoltageForBatteryCount(
         \\987654321111111
         \\811111111111119
         \\234234234234278
         \\818181911112111
-    );
+    , 2);
+    try std.testing.expectEqual(want, got);
+}
+
+test "better solution with 12 batteries" {
+    const want = 3_121_910_778_619;
+    const got = try totalJoltageForBatteryCount(
+        \\987654321111111
+        \\811111111111119
+        \\234234234234278
+        \\818181911112111
+    , 12);
     try std.testing.expectEqual(want, got);
 }
